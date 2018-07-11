@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript">
+function check() {
+	if (document.getElementById("name").value.length == 0) {
+		alert("登录名不能为空");
+		document.getElementById("name").focus();
+		return false;
+	} else if (document.getElementById("password").value.length==0) {
+		document.getElementById("password").focus();
+		alert("密码不能为空");
+		return false;
+	}
+	
+}
+
+
+</script>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+ <h2>登录</h2>
+	<form action="judge.jsp" method="post" onsubmit="return check()">
+
+		<table  align="center">
+			<tr>
+				<td align="right">用户名：</td>
+				<td><input type="text" size="20" name="name" id="name" /></td>
+			</tr>
+			<tr>
+				<td align="right">密码：</td>
+				<td><input type="password" size="20" name="password"
+					id="password" /></td>
+			</tr>
+			
+			<tr>
+				<td align="right"><input type="reset" name="Reset"
+					style="color: white; background: #FF8800; width: 79px; height: 35px;"
+					value="重填" /></td>
+				<td><input type="submit" name="Submit"
+					style="color: white; background: #00FF00; width: 79px; height: 35px;"
+					value="登录" /></td>
+			</tr>
+		</table>
+	
+	</form>
+</body>
+</html>

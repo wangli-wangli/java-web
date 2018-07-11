@@ -1,0 +1,229 @@
+<html>
+<head>
+<title>学生管理系统</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui.js"></script>
+<script type="text/javascript">
+
+	function RetrieveStudents() {
+		$
+				.post(
+						"list.action",
+						{},
+						function(data) {
+							$("#StudentsTable tr:gt(0)").remove();
+							for (var i = 0; i < data.length; i++) {
+								//插入表行
+								var trHtml = "<tr number = "+data[i].number +"><td>"
+										+ data[i].number
+										+ "</td><td>"
+										+ data[i].name
+										+ "</td><td>"
+										+ data[i].sex
+										+ "</td><td>"
+										+ data[i].born
+										+ "</td><td>"
+										+ data[i].address
+										+ "</td><td><a href=\"#\" class=\"updateLink\">修改</a> <a href=\"#\" class=\"deleteLink\">删除</a></td></tr>";
+								$("#StudentsTable").append(trHtml);
+							}
+							//绑定修改链接
+							$(".updateLink").click(function() {
+								$.post("edit.action", {
+									number : $(this).closest("tr").attr("number")
+								}, function(data) {
+									$("#UpdateNumber").val(data.number);
+									$("#UpdateStudentName").val(data.name);
+									$("#UpdateSex").val(data.sex);
+									$("#UpdateBorn").val(data.born);
+									$("#UpdateAddress").val(data.address);
+									$("#UpdateDiv").dialog("open");
+								}, "json");
+							});
+							//绑定删除链接
+
+							$(".deleteLink").click(
+									function() {
+										$.post("delete.action", {
+											number : $(this).closest("tr")
+													.attr("number")
+										}, function(data) {
+											if (data == "1") {
+												RetrieveStudents()
+											} else {
+												alert("删除学生失败！");
+											}
+										}, "json");
+									});
+						}, "json");
+	}
+	$(function() {
+		//设定Ajax提交编码格式为utf-8
+		$.ajaxSetup({
+			contentType : "application/x-www-form-urlencoded; charset=utf-8"
+		});
+	
+		$("#AddDiv").dialog({
+			title : "添加学生信息",
+			autoOpen : false,
+			height : 350,
+			width : 450,
+			modal : true,
+			show : "blind",
+			hide : "fade",
+			close : function() {
+				$("#AddNumber").val("");
+				$("#AddStudentName").val("");
+				$("#AddSex").val("");
+				$("#AddBorn").val("");
+				$("#AddAddress").val("");
+			}
+		});
+		
+		$("#UpdateDiv").dialog({
+			title : "修改图书信息",
+			autoOpen : false,
+			height : 280,
+			width : 350,
+			modal : true,
+			show : "blind",
+			hide : "fade",
+			close : function() {
+				$("#UpdateNumber").val("");
+				$("#UpdateStudentName").val("");
+				$("#UpdateSex").val("");
+				$("#UpdateBorn").val("");
+				$("#UpdateAddress").val("");
+			}
+		});
+		
+		$("#AddSubmit").click(function() {
+			//提交服务器
+			$.post("add.action", {
+				number : $("#AddNumber").val(),
+				name : $("#AddStudentName").val(),
+				sex : $("#AddSex").val(),
+				born : $("#AddBorn").val(),
+				address : $("#AddAddress").val()
+			}, function(data) {
+				if (data == "1") {
+					$("#AddDiv").dialog("close");
+					RetrieveStudents();
+				} else {
+					$("#AddTip").html("添加学生失败！请重新输入数据。");
+					$("#AddTip").show().delay(5000).hide(0);
+				}
+			}, "json");
+		});
+		//对添加学生窗口的添加键绑定事件驱动程序
+		$("#UpdateSubmit").click(function() {
+			//提交服务器
+			$.post("update.action", {
+				number : $("#UpdateNumber").val(),
+				name : $("#UpdateStudentName").val(),
+				sex : $("#UpdateSex").val(),
+				born : $("#UpdateBorn").val(),
+				address : $("#UpdateAddress").val()
+			}, function(data) {
+				if (data == "1") {
+					$("#UpdateDiv").dialog("close");
+					RetrieveStudents();
+				} else {
+					$("#UpdateTip").html("更新学生失败！请重新输入数据。");
+					$("#UpdateTip").show().delay(5000).hide(0);
+				}
+			}, "json");
+		});
+		//对“新增学生信息”链接绑定事件驱动程序
+		$("#AddButton").click(function() {
+			$("#AddDiv").dialog("open");
+		});
+		//第一次加载检索所有书籍
+		RetrieveStudents();
+	});
+</script>
+</head>
+<body>
+	<h1>学生管理系统</h1>
+	<a id="AddButton" href="#">增加学生信息</a>
+	<table style="width: 50%" id="StudentsTable">
+		<tr>
+			<th>学号</th>
+			<th>姓名</th>
+			<th>性别</th>
+			<th>出生日期</th>
+			<th>地址</th>
+			<th>管理</th>
+		</tr>
+	</table>
+	<div id="AddDiv" style="display: hidden">
+		<form id="AddForm">
+			<table style="width: 300px;" id="AddTable">
+				<tr>
+					<td>学号 :</td>
+					<td><input type="text" name="number" id="AddNumber" /></td>
+				</tr>
+				<tr>
+					<td>姓名:</td>
+					<td><input type="text" name="name" id="AddStudentName" /></td>
+				</tr>
+				<tr>
+					<td>性别:</td>
+					<td><input type="radio" name="sex" id="AddSex" value="男">男&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="radio" name="sex" id="AddSex" value="女">女</td>
+				</tr>
+				<tr>
+					<td>出生日期:</td>
+					<td><input type="date" name="born" id="AddBorn" /></td>
+				</tr>
+				<tr>
+					<td>地址:</td>
+					<td><input type="text" name="address" id="AddAddress" /></td>
+				</tr>
+				<tr>
+					<th colspan="2"><input type="button" value="添加" id="AddSubmit">
+						<input type="reset" value="重置"></th>
+				</tr>
+			</table>
+		</form>
+		<span style="color: red;" id="AddTip"></span>
+	</div>
+	<div id="UpdateDiv" style="display: hidden">
+		<form id="UpdateForm">
+			<table style="width: 300px;" id="UpdateTable">
+				<tr>
+					<th width="30%">学号</th>
+					<td width="70%"><input name="number" type="text"
+						id="UpdateNumber" readonly="readonly"></td>
+				</tr>
+				<tr>
+					<th>姓名:</th>
+					<td><input name="name" type="text" id="UpdateStudentName"
+						></td>
+				</tr>
+				<tr>
+					<th>性别：</th>
+					<td><input name="sex" type="text" id="UpdateSex"></td>
+				</tr>
+				<tr>
+					<th>出生日期：</th>
+					<td><input name="born" type="date" id="UpdateBorn"></td>
+				</tr>
+				<tr>
+					<th>地址：</th>
+					<td><input name="address" type="text" id="UpdateAddress"></td>
+				</tr>
+				<tr>
+					<th colspan="2"><input type="button" value="修改"
+						id="UpdateSubmit"> <input type="reset" value="重置"></th>
+				</tr>
+			</table>
+		</form>
+		<span style="color: red;" id="UpdateTip"></span>
+	</div>
+	<br />
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+/*设置超链接样式*/
+table {
+	border: 3px solid;
+	border-color: transparent;
+}
+
+th, td {
+	background: white;
+}
+
+a {
+	color: #5086a5;
+	text-decoration: none; /* 去掉链接中的下划线 */
+	font-size: 12px;
+}
+
+a:hover /* 鼠标指针移动到链接上 */ {
+	color: #5086a5;
+	text-decoration: underline;
+	font-size: 12px;
+}
+
+a:visited /* 已被访问的链接 */ {
+	color: #5086a5;
+	font-size: 12px;
+}
+/*tab头的样式*/
+#tabsHead /* id 选择器 */ {
+	padding-left: 0px;
+	height: 26px;
+	background-color: #e8f7fc;
+	font-size: 1em;
+	margin: 1px 0px 0px;
+	color: #5086a5;
+	line-height: 26px;
+}
+/*已选tab头（超链接）的样式*/
+.curtab {
+	padding-top: 0px;
+	padding-right: 10px;
+	padding-bottom: 0px;
+	padding-left: 10px;
+	border-right: #b2c9d3 1px solid; /*  把右边框的所有属性设置到一个声明中。*/
+	font-weight: bold;
+	float: left;
+	cursor: pointer; /* 点光标： */
+	background: #ffffff;
+}
+/*未选tab头（超链接）的样式*/
+.tabs {
+	border-right: #c1d8e0 1px solid;
+	padding-top: 0px;
+	padding-right: 10px;
+	padding-bottom: 0px;
+	padding-left: 10px;
+	font-weight: normal;
+	float: left;
+	cursor: pointer;
+}
+
+p {
+	font-size: 12pt;
+	text-indent: 2em; /* 文本缩进 */
+}
+/*整个tab层居中，宽度为600px*/
+#tabDiv {
+	width: 600px;
+	margin: 1em auto;
+	padding-bottom: 10px;
+	border-right: #b2c9d3 1px solid;
+	border-top: #b2c9d3 1px solid;
+	border-left: #b2c9d3 1px solid;
+	border-bottom: #b2c9d3 1px solid;
+	background: #ffffff;
+}
+</style>
+<script type="text/javascript">
+	//显示tab（tabHeadId：tab头中当前的超链接；tabContentId要显示的层ID）
+	function showTab(tabHeadId, tabContentId) {
+		//tab层
+		var tabDiv = document.getElementById("tabDiv");
+		//将tab层中所有的内容层设为不可见
+		//遍历tab层下的所有子节点
+		var taContents = tabDiv.childNodes;
+		for (i = 0; i < taContents.length; i++) {
+			//将所有内容层都设为不可见
+			if (taContents[i].id != null && taContents[i].id != 'tabsHead') {
+				taContents[i].style.display = 'none';
+			}
+		}
+		//将要显示的层设为可见
+		document.getElementById(tabContentId).style.display = 'block';
+		//遍历tab头中所有的超链接
+		var tabHeads = document.getElementById('tabsHead')
+				.getElementsByTagName('a');
+		for (i = 0; i < tabHeads.length; i++) {
+			//将超链接的样式设为未选的tab头样式
+			tabHeads[i].className = 'tabs';
+		}
+		//将当前超链接的样式设为已选tab头样式
+		document.getElementById(tabHeadId).className = 'curtab';
+		document.getElementById(tabHeadId).blur();
+	}
+</script>
+<script src="jquery-1.11.1.min.js"></script>
+<!-- 点击按钮，出现或隐藏 -->
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#button1").click(function() {
+			$("#PersonMessage").toggle();
+		});
+	});
+	$(document).ready(function() {
+		$("#button2").click(function() {
+			$("#PersonMessage2").toggle();
+		});
+	});
+</script>
+<meta charset="UTF-8">
+<title>index.html</title>
+</head>
+<body style="background: url(image/123.jpg); background-size: cover">
+
+	<p align="center" style="font-size: 20px;">
+		<span style="color: blue; font-size: 40px">空空大师</span>的个人主页
+	</p>
+	<div id="tabDiv" style="width: 1000px" align="center">
+
+		<div id="tabsHead">
+			<a id="tabs1" class="curtab"
+				href="javascript:showTab('tabs1','tabContent1')">基本资料</a> <a
+				id="tabs2" class="tabs"
+				href="javascript:showTab('tabs2','tabContent2')">教育背景</a> <a
+				id="tabs3" class="tabs"
+				href="javascript:showTab('tabs3','tabContent3')">最近博客</a>
+		</div>
+
+		<div id="tabContent1" style="display: block">
+			<table style="border-width: 0; width: 100%">
+				<tr>
+					<td rowspan="3" style="width: 300px; text-align: center"><img
+						alt="李易峰" src="image/photo2.jpg" style="width: 280px" /></td>
+					<td colspan="3" rowspan="3">
+						<table border="1"
+							style="border-left-color: aqua; border-bottom-color: aqua; width: 701px; border-top-style: solid; border-top-color: aqua; border-right-style: solid; border-left-style: solid; border-right-color: aqua; border-bottom-style: solid">
+							<tr>
+								<td colspan="2">
+									<button type="button" id="button1"
+										style="width: 100%; background: #FDD; height: 50px;">个人资料(点击)</button>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<div id="PersonMessage">
+										<table border="1"
+											style="border-left-color: aqua; border-bottom-color: aqua; width: 701px; border-top-style: solid; border-top-color: aqua; border-right-style: solid; border-left-style: solid; border-right-color: aqua; border-bottom-style: solid">
+											<tr>
+												<td>姓名：王莉</td>
+												<td>性别：女</td>
+											</tr>
+											<tr>
+												<td style="width: 50%">生日：11月20日</td>
+												<td style="width: 50%">星座：天蝎座</td>
+											</tr>
+											<tr>
+												<td style="width: 50%; height: 29px">现居地：中国宁夏中卫</td>
+												<td style="width: 50%; height: 29px">婚姻状况：未填写</td>
+											</tr>
+											<tr>
+												<td style="width: 50%">血型：A</td>
+												<td style="width: 50%">故乡：未填写</td>
+											</tr>
+											<tr>
+												<td style="width: 50%">职业：在校</td>
+												<td style="width: 50%">详细地址：未填写</td>
+											</tr>
+										</table>
+									</div>
+								</td>
+							</tr>
+							<tr>
+
+								<td colspan="2">
+									<button type="button" id="button2"
+										style="width: 100%; background: #FDD; height: 50px;">兴趣爱好(点击)</button>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<div id="PersonMessage2">
+										<table border="1"
+											style="border-left-color: aqua; border-bottom-color: aqua; width: 701px; border-top-style: solid; border-top-color: aqua; border-right-style: solid; border-left-style: solid; border-right-color: aqua; border-bottom-style: solid">
+											<tr>
+												<td style="width: 50%">职业：在校</td>
+												<td style="width: 50%">详细地址：未填写</td>
+											</tr>
+											<tr>
+												<td style="width: 50%">职业：在校</td>
+												<td style="width: 50%">详细地址：未填写</td>
+											</tr>
+										</table>
+										</div>
+							</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</div>
+
+	<!--以下为主要成就部分内容-->
+	<div id="tabContent2" style="display: none">
+		<table width="80%">
+			<td>2006~2020</td>
+			<td>就读于石家庄铁道大学</td>
+			</tr>
+			<tr>
+				<td>专业</td>
+				<td>软件工程</td>
+			</tr>
+			<tr>
+				<td>曾获证书</td>
+				<td>英语四级证，计算机四级证</td>
+			</tr>
+			<tr>
+				<td>获奖情况</td>
+				<td>无</td>
+			</tr>
+			<tr>
+				<td>社会实践</td>
+				<td>校外残疾儿童志愿者服务</td>
+			</tr>
+		</table>
+	</div>
+	<div id="tabContent3" style="display: block;">
+		<table>
+			<tr>
+				<td style="background-color:#FEA">
+
+					<ul style="list-style-type: none;">
+						<li><span
+							style="color: #CD853F; font-family: 黑体; font-weight: bold;">2018年4月7日</span></li>
+						<li><span style="font-weight: bold;">项目目标文档---河北省创新平台年报统计</li>
+						<li><p>
+								摘要: 项目目标：（目标、好处、度量） 目标：便捷、精确、清晰统计并上传河北科技创新平台信息。
+								好处：通过河北科技创新平台年报系统来清晰展现河北年度科技创新成果。
+								度量：平台信息的填报所用时间比以往减少了20%，审核速度比以往提高了13%。 项目目标：（目标、好处、度量）
+								目标：便捷、精确、清晰统计并上传河 <span style="color: blue">阅读全文</span>
+							</p></li>
+						<li><div style="margin-left: 13cm; color: #808080">posted
+								@ 2018-04-07 20:46 空空大师 阅读(9) 评论(0) <span
+							style="color: #CD853F;">编辑</span></div></li>
+					</ul>
+
+				</td>
+			</tr>
+		</table>
+	</div>
+	</div>
+	<hr />
+
+
+</body>
+</html>
